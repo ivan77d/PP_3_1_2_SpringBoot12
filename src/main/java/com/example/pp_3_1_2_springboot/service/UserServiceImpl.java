@@ -4,13 +4,16 @@ package com.example.pp_3_1_2_springboot.service;
 import com.example.pp_3_1_2_springboot.dao.UserDao;
 import com.example.pp_3_1_2_springboot.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserDao userDao;
 
@@ -50,7 +53,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User loadUserByLogin(String username) {
+    public User getUserByLogin(String username) {
+        return userDao.getUserByLogin(username);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userDao.getUserByLogin(username);
     }
 }
